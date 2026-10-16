@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<BaseLayout 
+  title="Mathematical Methodology & Quantitative Proofs"
+  description="Exhaustive documentation of numerical solvers, formulas, Newton-Raphson algorithms, and regulatory parameters utilized across InvestiQ RupeeMath."
+>
+  <div class="container container-narrow page-content">
+    <div class="badge-row">
+      <span class="badge badge-gold">Formal Specification</span>
+      <span class="badge badge-blue">Deterministic Mathematics</span>
+    </div>
+    <h1>Mathematical Methodology & Formulations</h1>
+    <p class="intro-p">
+      InvestiQ RupeeMath operates on a strict policy of quantitative transparency. We do not use proprietary "black-box" models or arbitrary constants. Every calculation executed in our client-side tools is governed by verifiable mathematical proofs and official Indian statutes.
+    </p>
+
+    <hr class="section-divider" />
+
+    <h2>1. The Exact Fisher Equation for Real Returns</h2>
+    <p>
+      In mainstream media, the "real return" of an asset is frequently estimated as <code>r_real ≈ r_nominal - i</code>. While this linear subtraction suffices as an informal heuristic, it fails in quantitative finance because inflation erodes the return generated during the holding period as well as the initial principal.
+    </p>
+    <p>
+      The exact identity derived by Irving Fisher (1930) is:
+    </p>
+    <pre><code>(1 + r_nominal) = (1 + r_real) × (1 + i)
+
+Solving for r_real:
+r_real = [(1 + r_nominal) / (1 + i)] - 1</code></pre>
+    <p>
+      When incorporating taxes, we evaluate nominal post-tax return <code>r_net = r_gross × (1 - tax)</code>. The real post-tax yield is thus:
+    </p>
+    <pre><code>r_real_net = [(1 + r_gross × (1 - tax)) / (1 + i)] - 1</code></pre>
+
+    <h2>2. Irregular Cash Flow Internal Rate of Return (XIRR)</h2>
+    <p>
+      When cash flows occur on irregular calendar dates (d_0, d_1, ... d_n), the annualized internal rate of return r is defined as the root of the discounted cash flow polynomial:
+    </p>
+    <pre><code>f(r) = sum(j=0 to n) [ C_j / (1 + r)^((d_j - d_0)/365) ] = 0</code></pre>
+    <p>
+      Our solver implements the <strong>Newton-Raphson iteration</strong>:
+    </p>
+    <pre><code>r_next = r - f(r) / f'(r)
+
+where the analytical first derivative f'(r) is:
+f'(r) = -sum(j=0 to n) [ ((d_j - d_0)/365) * C_j / (1 + r)^(((d_j - d_0)/365) + 1) ]</code></pre>
+    <p>
+      If the derivative evaluates near zero (|f'(r)| &lt; 10<sup>-12</sup>), the algorithm applies a small numerical perturbation. If convergence is not achieved within 100 iterations, the engine automatically falls back to a bounded <strong>bisection search</strong> over the interval [-0.99, 5.0], guaranteeing numerical stability for all valid inputs.
+    </p>
+
+    <h2>3. Compounding Multipliers: Rules of 72, 114, and 144</h2>
+    <p>
+      For an asset compounding at annual rate <code>r</code>, the exact time <code>t</code> required to scale by factor <code>M</code> (M=2 for doubling, M=3 for tripling, M=4 for quadrupling) is:
+    </p>
+    <pre><code>(1 + r)^t = M
+t = ln(M) / ln(1 + r)</code></pre>
+    <p>
+      Expanding <code>ln(1 + r)</code> via Taylor series around r = 0:
+    </p>
+    <pre><code>ln(1 + r) = r - r²/2 + r³/3 - ... ≈ r
+
+For doubling (M = 2):
+ln(2) ≈ 0.693147
+t ≈ 0.693147 / r = 69.3 / R  (where R = 100r)</code></pre>
+    <p>
+      The number 72 is chosen empirically because it has 12 integer divisors and compensates for the curvature of discrete annual compounding between 6% and 10%.
+    </p>
+
+    <h2>4. Volatility Drag (Variance Drag)</h2>
+    <p>
+      The compound geometric return (R_G or CAGR) of a volatile asset stream is structurally lower than its arithmetic average (μ_A):
+    </p>
+    <pre><code>CAGR ≈ μ_A - 0.5 × σ²
+
+where σ² is the sample variance of annual returns.</code></pre>
+    <p>
+      This mathematical identity proves that high-beta strategies (e.g., small-cap or thematic momentum funds with high volatility) incur severe compounding drag during negative drawdowns.
+    </p>
+
+    <div class="callout callout-success">
+      <h5>Verified Implementation Source</h5>
+      <p>
+        All formulas documented above are implemented as pure, tested TypeScript functions in <code>src/lib/finance-math.ts</code> and verified by automated unit tests in <code>tests/finance-math.test.ts</code>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .intro-p {
+    font-size: 1.15rem;
+    color: var(--iq-text-secondary);
+    line-height: 1.6;
+    margin-top: 0.5rem;
+  }
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--iq-border);
+    margin: 2rem 0;
+  }
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+</style>

@@ -1,0 +1,349 @@
+---
+// Real Post-Tax Return Solver Interactive Component
+---
+
+<div class="calculator-card" id="real-return-solver">
+  <div class="calc-header">
+    <div class="badge-row">
+      <span class="badge badge-gold">Quantitative Tool</span>
+      <span class="badge badge-blue">Exact Fisher Equation</span>
+    </div>
+    <h3>Real Post-Tax Return Solver</h3>
+    <p class="calc-subtitle">
+      Calculates the net purchasing-power yield after deducting Indian capital gains/slab taxes and macroeconomic CPI or lifestyle inflation drag.
+    </p>
+  </div>
+
+  <form id="real-return-form" class="calc-form" onsubmit="return false;">
+    <div class="calc-grid">
+      <div class="form-group">
+        <label for="nominal-rate" class="form-label">
+          Nominal Pre-Tax Return (% p.a.)
+          <span class="tooltip" title="Expected gross annual growth before tax and inflation.">ⓘ</span>
+        </label>
+        <input
+          type="number"
+          id="nominal-rate"
+          class="form-control"
+          step="0.1"
+          min="-50"
+          max="100"
+          value="12.0"
+          required
+        />
+        <span class="input-hint">e.g. 12% for Nifty 50 TRI, 7.5% for Corporate FD</span>
+      </div>
+
+      <div class="form-group">
+        <label for="inflation-rate" class="form-label">
+          Inflation Rate (% p.a.)
+          <span class="tooltip" title="Annual erosion of purchasing power.">ⓘ</span>
+        </label>
+        <input
+          type="number"
+          id="inflation-rate"
+          class="form-control"
+          step="0.1"
+          min="0"
+          max="50"
+          value="6.0"
+          required
+        />
+        <span class="input-hint">RBI target is 4.0% (+/-2%); Urban education/health is ~8-10%</span>
+      </div>
+
+      <div class="form-group">
+        <label for="asset-tax-type" class="form-label">Asset Class / Tax Category</label>
+        <select id="asset-tax-type" class="form-control">
+          <option value="equity_ltcg" selected>Equity LTCG (12.5% post-Finance Act 2024)</option>
+          <option value="equity_stcg">Equity STCG (20.0% post-Finance Act 2024)</option>
+          <option value="debt_slab">Debt Fund / Fixed Income (Slab Rate: 31.2%)</option>
+          <option value="fd_slab">Fixed Deposit / Savings (Slab Rate: 31.2%)</option>
+          <option value="custom">Custom Tax Rate (%)</option>
+        </select>
+        <span class="input-hint">Finance (No. 2) Act 2024 revised rates</span>
+      </div>
+
+      <div class="form-group" id="custom-tax-container" style="display: none;">
+        <label for="custom-tax-rate" class="form-label">Custom Tax Rate (%)</label>
+        <input
+          type="number"
+          id="custom-tax-rate"
+          class="form-control"
+          step="0.1"
+          min="0"
+          max="60"
+          value="12.5"
+        />
+        <span class="input-hint">Include surcharge and 4% Health & Education cess</span>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button type="button" id="btn-calc-real-return" class="btn btn-gold">Solve Real Return</button>
+      <button type="button" id="btn-reset-real-return" class="btn">Reset to Standard Scenario</button>
+    </div>
+  </form>
+
+  <div id="real-return-results" class="results-panel" aria-live="polite">
+    <div class="results-grid">
+      <div class="result-tile highlight-tile">
+        <span class="tile-label">Exact Real Return (Fisher Equation)</span>
+        <span class="tile-value value-primary" id="res-exact-real">--</span>
+        <span class="tile-subtext" id="res-formula-explanation">Formula: (1 + r_net) / (1 + i) - 1</span>
+      </div>
+
+      <div class="result-tile">
+        <span class="tile-label">Nominal Post-Tax Yield</span>
+        <span class="tile-value" id="res-nominal-post-tax">--</span>
+        <span class="tile-subtext" id="res-tax-applied">Effective tax drag: --</span>
+      </div>
+
+      <div class="result-tile">
+        <span class="tile-label">Approximate Rule-of-Thumb</span>
+        <span class="tile-value" id="res-approx-real">--</span>
+        <span class="tile-subtext">Overstatement error: <span id="res-error-gap">--</span></span>
+      </div>
+
+      <div class="result-tile">
+        <span class="tile-label">10-Year Purchasing Power Multiplier</span>
+        <span class="tile-value" id="res-purchasing-power">--</span>
+        <span class="tile-subtext" id="res-wealth-narrative">Real wealth expansion</span>
+      </div>
+    </div>
+
+    <div class="callout callout-warning math-insight">
+      <h5>Mathematical Context: The Fisher Exact Identity</h5>
+      <p>
+        The widely used shortcut <code>Real Return = Nominal - Inflation</code> fails at compounding multi-year horizons. The true Fisher relationship is:
+      </p>
+      <p style="text-align: center; font-family: var(--iq-font-mono); font-weight: 600;">
+        (1 + r_nominal_net) = (1 + r_real) × (1 + i)  ⟹  r_real = [(1 + r_nominal_net) / (1 + i)] - 1
+      </p>
+      <p>
+        Because inflation erodes both the principal <em>and</em> the returns earned during the year, the approximate formula consistently overstates purchasing-power growth.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    const nominalInput = document.getElementById('nominal-rate');
+    const inflationInput = document.getElementById('inflation-rate');
+    const taxSelect = document.getElementById('asset-tax-type');
+    const customTaxContainer = document.getElementById('custom-tax-container');
+    const customTaxInput = document.getElementById('custom-tax-rate');
+    const calcBtn = document.getElementById('btn-calc-real-return');
+    const resetBtn = document.getElementById('btn-reset-real-return');
+
+    if (!nominalInput || !inflationInput || !taxSelect || !calcBtn) return;
+
+    taxSelect.addEventListener('change', () => {
+      if (taxSelect.value === 'custom') {
+        customTaxContainer.style.display = 'block';
+      } else {
+        customTaxContainer.style.display = 'none';
+      }
+      runCalculation();
+    });
+
+    nominalInput.addEventListener('input', runCalculation);
+    inflationInput.addEventListener('input', runCalculation);
+    customTaxInput.addEventListener('input', runCalculation);
+    calcBtn.addEventListener('click', runCalculation);
+
+    resetBtn.addEventListener('click', () => {
+      nominalInput.value = '12.0';
+      inflationInput.value = '6.0';
+      taxSelect.value = 'equity_ltcg';
+      customTaxContainer.style.display = 'none';
+      runCalculation();
+    });
+
+    function getTaxRate() {
+      switch (taxSelect.value) {
+        case 'equity_ltcg': return 0.125;
+        case 'equity_stcg': return 0.20;
+        case 'debt_slab': return 0.312;
+        case 'fd_slab': return 0.312;
+        case 'custom': return (parseFloat(customTaxInput.value) || 0) / 100;
+        default: return 0.125;
+      }
+    }
+
+    function runCalculation() {
+      const nominal = (parseFloat(nominalInput.value) || 0) / 100;
+      const inflation = (parseFloat(inflationInput.value) || 0) / 100;
+      const taxRate = getTaxRate();
+
+      const nominalPostTax = nominal * (1 - taxRate);
+      const exactReal = (1 + nominalPostTax) / (1 + inflation) - 1;
+      const approxReal = nominalPostTax - inflation;
+      const tenYearMultiplier = Math.pow(1 + exactReal, 10);
+      const taxDragPct = (nominal - nominalPostTax) * 100;
+      const errorGap = (approxReal - exactReal) * 100;
+
+      // Update DOM
+      const exactEl = document.getElementById('res-exact-real');
+      const postTaxEl = document.getElementById('res-nominal-post-tax');
+      const approxEl = document.getElementById('res-approx-real');
+      const ppEl = document.getElementById('res-purchasing-power');
+      const taxAppliedEl = document.getElementById('res-tax-applied');
+      const errorGapEl = document.getElementById('res-error-gap');
+      const wealthNarEl = document.getElementById('res-wealth-narrative');
+
+      if (exactEl) {
+        exactEl.textContent = (exactReal * 100).toFixed(2) + '%';
+        exactEl.className = 'tile-value ' + (exactReal >= 0 ? 'value-positive' : 'value-negative');
+      }
+
+      if (postTaxEl) {
+        postTaxEl.textContent = (nominalPostTax * 100).toFixed(2) + '%';
+      }
+
+      if (taxAppliedEl) {
+        taxAppliedEl.textContent = `Tax drag: -${taxDragPct.toFixed(2)}% (Tax: ${(taxRate * 100).toFixed(1)}%)`;
+      }
+
+      if (approxEl) {
+        approxEl.textContent = (approxReal * 100).toFixed(2) + '%';
+      }
+
+      if (errorGapEl) {
+        errorGapEl.textContent = `+${errorGap.toFixed(2)}% overstatement`;
+      }
+
+      if (ppEl) {
+        ppEl.textContent = tenYearMultiplier.toFixed(2) + 'x';
+      }
+
+      if (wealthNarEl) {
+        if (exactReal < 0) {
+          wealthNarEl.textContent = 'Purchasing power is decaying over time';
+          wealthNarEl.style.color = 'var(--iq-danger)';
+        } else {
+          wealthNarEl.textContent = `10y real buying power expands by ${((tenYearMultiplier - 1) * 100).toFixed(1)}%`;
+          wealthNarEl.style.color = 'var(--iq-success)';
+        }
+      }
+    }
+
+    // Run initial on mount
+    runCalculation();
+  })();
+</script>
+
+<style>
+  .calculator-card {
+    background-color: var(--iq-surface);
+    border: 1px solid var(--iq-border);
+    border-radius: var(--iq-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--iq-shadow-md);
+    margin: 2rem 0;
+  }
+
+  .calc-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .calc-subtitle {
+    color: var(--iq-text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+  }
+
+  .calc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .input-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--iq-text-muted);
+    margin-top: 0.25rem;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .results-panel {
+    background-color: var(--iq-surface-raised);
+    border: 1px solid var(--iq-border);
+    border-radius: var(--iq-radius-md);
+    padding: 1.5rem;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .result-tile {
+    background-color: var(--iq-surface);
+    border: 1px solid var(--iq-border-subtle);
+    border-radius: var(--iq-radius-md);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .highlight-tile {
+    border-color: var(--iq-rupee-gold);
+    background: linear-gradient(180deg, var(--iq-surface) 0%, var(--iq-rupee-gold-glow) 100%);
+  }
+
+  .tile-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--iq-text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .tile-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    font-family: var(--iq-font-mono);
+  }
+
+  .value-primary {
+    color: var(--iq-rupee-gold);
+  }
+
+  .value-positive {
+    color: var(--iq-success);
+  }
+
+  .value-negative {
+    color: var(--iq-danger);
+  }
+
+  .tile-subtext {
+    font-size: 0.75rem;
+    color: var(--iq-text-muted);
+    margin-top: 0.35rem;
+  }
+
+  .math-insight h5 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+</style>

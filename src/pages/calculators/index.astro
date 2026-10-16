@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RealReturnSolver from '../../components/RealReturnSolver.astro';
+import XIRREngine from '../../components/XIRREngine.astro';
+import RuleMultiplierVisualizer from '../../components/RuleMultiplierVisualizer.astro';
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<BaseLayout
+  title="Interactive Quantitative Calculators & Solvers"
+  description="Client-side financial engineering tools: Real Post-Tax Return Solver, Newton-Raphson XIRR Engine, and Logarithmic Compounding Multiplier Visualizer."
+>
+  <div class="container page-header">
+    <div class="badge-row">
+      <span class="badge badge-gold">Browser-First Suite</span>
+      <span class="badge badge-green">100% Client-Side Privacy</span>
+    </div>
+    <h1>Quantitative Financial Solvers</h1>
+    <p class="page-subtitle">
+      Deterministic, browser-based financial engineering models with complete transparency into formulas, assumptions, and regulatory tax parameters.
+    </p>
+  </div>
+
+  <div class="container">
+    <section class="calc-section-block">
+      <RealReturnSolver />
+    </section>
+
+    <section class="calc-section-block">
+      <XIRREngine />
+    </section>
+
+    <section class="calc-section-block">
+      <RuleMultiplierVisualizer />
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--iq-border);
+    margin-bottom: 2rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .page-subtitle {
+    color: var(--iq-text-secondary);
+    font-size: 1.15rem;
+    max-width: 800px;
+  }
+
+  .calc-section-block {
+    margin-bottom: 3.5rem;
+  }
+</style>

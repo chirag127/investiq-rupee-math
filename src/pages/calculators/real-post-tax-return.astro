@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RealReturnSolver from '../../components/RealReturnSolver.astro';
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<BaseLayout 
+  title="Real Post-Tax Return Solver"
+  description="Calculate the true purchasing power return of Indian financial assets by factoring in Finance Act 2024 capital gains taxes and macroeconomic inflation."
+>
+  <div class="container container-narrow page-header">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href={`${basePath}/`}>Home</a> &gt; 
+      <a href={`${basePath}/calculators/`}>Calculators</a> &gt; 
+      <span>Real Post-Tax Return Solver</span>
+    </nav>
+    <h1>Real Post-Tax Return Solver</h1>
+    <p class="page-subtitle">
+      Solves the exact Fisher equation (1 + r_net) / (1 + i) - 1 across Indian Equity LTCG, STCG, and debt slab taxation.
+    </p>
+  </div>
+
+  <div class="container container-narrow">
+    <RealReturnSolver />
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
+  }
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: var(--iq-text-muted);
+    margin-bottom: 1rem;
+  }
+  .breadcrumb a {
+    color: var(--iq-text-secondary);
+  }
+  .page-subtitle {
+    color: var(--iq-text-secondary);
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const terms = [
+  {
+    term: "CAGR (Compound Annual Growth Rate)",
+    definition: "The constant geometric rate of return required for an initial lump-sum capital to grow to a final terminal value over a multi-year horizon: (End Value / Start Value)^(1/Years) - 1. Does not account for periodic intermediate cash flows."
+  },
+  {
+    term: "XIRR (Extended Internal Rate of Return)",
+    definition: "The annualized internal discount rate that makes the net present value of a multi-tranche series of irregular cash flows equal zero. Required by SEBI for all mutual fund SIP and SWP performance reporting."
+  },
+  {
+    term: "Fisher Equation",
+    definition: "The exact identity relating nominal return, real return, and inflation: (1 + r_nominal) = (1 + r_real) * (1 + inflation). Proves that simple linear subtraction overstates purchasing-power growth."
+  },
+  {
+    term: "Sequence of Returns Risk (SRR)",
+    definition: "The critical danger during retirement (decumulation) where market downturns occurring in the initial years permanently impair portfolio longevity, even if long-term average CAGR is positive."
+  },
+  {
+    term: "Volatility Drag (Variance Drag)",
+    definition: "The mathematical reduction in compound geometric return caused by volatility: CAGR ≈ Arithmetic Mean - 0.5 * Variance. Demonstrates why highly volatile assets compound slower than stable assets with identical average returns."
+  },
+  {
+    term: "Effective Annual Rate (EAR)",
+    definition: "The annualized compound yield of a financial product taking into account intra-year compounding frequencies (e.g. quarterly bank FDs, monthly NBFC deposits): (1 + r/m)^m - 1."
+  },
+  {
+    term: "Section 112A (Equity LTCG)",
+    definition: "Under the Income Tax Act, 1961 (amended by Finance Act No. 2, 2024), long-term capital gains on listed equities and equity mutual funds held > 12 months are taxed at 12.5% on aggregate gains exceeding ₹1.25 Lakh per financial year."
+  },
+  {
+    term: "Section 50AA (Specified Mutual Funds)",
+    definition: "Tax provision governing debt-oriented mutual funds acquired on or after 1 April 2023 with <= 35% domestic equity exposure. Capital gains are treated as short-term capital gains and taxed at marginal income tax slab rates."
+  },
+  {
+    term: "Drawdown Asymmetry",
+    definition: "The non-linear relationship where percentage losses require larger percentage gains to break even: Required Gain = Drawdown / (1 - Drawdown). A 50% crash requires a 100% gain to restore principal."
+  },
+  {
+    term: "Safe Withdrawal Rate (SWR)",
+    definition: "The percentage of an initial retirement corpus that can be withdrawn annually (adjusted for inflation) with near-zero probability of portfolio exhaustion. In India, conservative research points to 2.75%–3.25%."
+  },
+  {
+    term: "Step-Up SIP",
+    definition: "A systematic investment facility where monthly contributions automatically escalate each year by a predefined percentage (e.g. 10%) to align with annual salary increments and combat inflation."
+  },
+  {
+    term: "Rule of 72 / 114 / 144",
+    definition: "Mental math heuristics derived from natural logarithms estimating the years required to double (72/r), triple (114/r), or quadruple (144/r) an investment under compound interest."
+  }
+];
+---
+
+<BaseLayout 
+  title="Financial Mathematics Glossary"
+  description="Authoritative glossary of quantitative finance, Indian tax statutes, compounding metrics, and regulatory terminology."
+>
+  <div class="container container-narrow page-content">
+    <div class="badge-row">
+      <span class="badge badge-gold">Reference</span>
+      <span class="badge badge-blue">12 Core Terms</span>
+    </div>
+    <h1>Financial Mathematics Glossary</h1>
+    <p class="intro-p">
+      Precise definitions and statutory citations for quantitative finance terminology used across InvestiQ RupeeMath.
+    </p>
+
+    <div class="terms-list">
+      {terms.map(item => (
+        <div class="term-card card">
+          <h3>{item.term}</h3>
+          <p>{item.definition}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .intro-p {
+    font-size: 1.15rem;
+    color: var(--iq-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .terms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .term-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--iq-rupee-gold);
+    font-size: 1.15rem;
+  }
+  .term-card p {
+    margin: 0;
+    color: var(--iq-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+</style>

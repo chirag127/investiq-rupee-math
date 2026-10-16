@@ -1,0 +1,299 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RealReturnSolver from '../components/RealReturnSolver.astro';
+import XIRREngine from '../components/XIRREngine.astro';
+import RuleMultiplierVisualizer from '../components/RuleMultiplierVisualizer.astro';
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<BaseLayout 
+  title="RupeeMath — Compounding Physics, Real Returns & Indian Inflation Drag"
+  description="Standalone quantitative finance research and client-side calculators for Indian investors. Exact Fisher equation real returns, XIRR Newton-Raphson solvers, and inflation drag modeling."
+>
+  <div class="container hero-container">
+    <div class="hero-badge-row">
+      <span class="badge badge-gold">InvestiQ Network • Site #02</span>
+      <span class="badge badge-blue">Zero Telemetry • 100% Client-Side</span>
+      <span class="badge badge-green">Finance (No. 2) Act 2024 Compliant</span>
+    </div>
+
+    <h1 class="hero-title">
+      The Mathematical Physics of <span class="highlight-gold">Rupee Compounding</span>
+    </h1>
+    <p class="hero-subtitle">
+      Move beyond naive financial rules of thumb. Explore exact Fisher real returns, solve irregular cash flow XIRRs via Newton-Raphson, and quantify Indian lifestyle inflation drag.
+    </p>
+
+    <div class="hero-cta-group">
+      <a href="#calculators" class="btn btn-gold">Launch Solvers</a>
+      <a href={`${basePath}/articles/`} class="btn">Read Research Papers</a>
+      <a href={`${basePath}/methodology/`} class="btn">Formula Proofs</a>
+    </div>
+  </div>
+
+  <section class="container stats-bar">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-num">12.5%</span>
+        <span class="stat-desc">Equity LTCG Tax Rate (Post-Budget 2024, >₹1.25L Exemption)</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">4.0% ±2%</span>
+        <span class="stat-desc">RBI Headline CPI Monetary Policy Inflation Target</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">8.5% - 11%</span>
+        <span class="stat-desc">Empirical Urban Education & Healthcare Inflation Drag</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">100%</span>
+        <span class="stat-desc">Client-Side Deterministic Privacy (Zero Cloud Transmissions)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Calculators Section -->
+  <section id="calculators" class="container calculators-section">
+    <div class="section-header">
+      <span class="section-tag">Interactive Suite</span>
+      <h2>First-Class Browser Quantitative Solvers</h2>
+      <p class="section-desc">
+        No mockups. All equations execute directly in your browser with high mathematical precision.
+      </p>
+    </div>
+
+    <!-- Solver 1 -->
+    <RealReturnSolver />
+
+    <!-- Solver 2 -->
+    <XIRREngine />
+
+    <!-- Solver 3 -->
+    <RuleMultiplierVisualizer />
+  </section>
+
+  <!-- Research Articles Feature Grid -->
+  <section class="container articles-preview-section">
+    <div class="section-header">
+      <span class="section-tag">Peer-Reviewed Research</span>
+      <h2>Featured Quantitative Papers</h2>
+      <p class="section-desc">
+        Rigorous, citation-backed analyses grounded in Indian statutory tax codes and central bank data.
+      </p>
+    </div>
+
+    <div class="articles-grid">
+      <div class="card article-card">
+        <span class="badge badge-gold">Compounding Physics</span>
+        <h3><a href={`${basePath}/articles/physics-of-compounding-time-vs-rate/`}>Physics of Compounding: Why Real Exponential Growth is Back-Loaded</a></h3>
+        <p>Why more than 70% of lifetime rupee wealth creation occurs in the final third of a 30-year horizon.</p>
+        <div class="card-meta">10 min read • Verified Oct 2026</div>
+      </div>
+
+      <div class="card article-card">
+        <span class="badge badge-gold">Cash Flow Analytics</span>
+        <h3><a href={`${basePath}/articles/cagr-vs-xirr-methodology/`}>CAGR vs XIRR Methodology: Resolving Cash Flow Distortion</a></h3>
+        <p>Why point-to-point compound rates fail for SIPs and how Newton-Raphson solvers accurately weigh irregular cash inflows.</p>
+        <div class="card-meta">12 min read • Verified Oct 2026</div>
+      </div>
+
+      <div class="card article-card">
+        <span class="badge badge-gold">Real Returns & Inflation</span>
+        <h3><a href={`${basePath}/articles/fisher-equation-real-returns/`}>The Fisher Equation: Real Returns vs Nominal Illusions in India</a></h3>
+        <p>Why the popular shortcut <code>r - i</code> systematically overstates purchasing-power expansion in high-inflation regimes.</p>
+        <div class="card-meta">8 min read • Verified Oct 2026</div>
+      </div>
+
+      <div class="card article-card">
+        <span class="badge badge-gold">Retirement & Sequence Risk</span>
+        <h3><a href={`${basePath}/articles/sequence-of-returns-risk-srr/`}>Sequence of Returns Risk: Why Return Order Shatters Retirement</a></h3>
+        <p>Proof showing why two identical 10% average CAGR portfolios result in either multi-crore wealth or total early bankruptcy.</p>
+        <div class="card-meta">14 min read • Verified Oct 2026</div>
+      </div>
+
+      <div class="card article-card">
+        <span class="badge badge-gold">Risk & Drawdowns</span>
+        <h3><a href={`${basePath}/articles/drawdown-recovery-asymmetry/`}>Drawdown and Recovery Asymmetry: The Non-Linear Math of Capital Destruction</a></h3>
+        <p>The mathematical proof of why a 50% crash requires a 100% gain to break even, and how volatility drag erodes small-cap compounding.</p>
+        <div class="card-meta">9 min read • Verified Oct 2026</div>
+      </div>
+
+      <div class="card article-card">
+        <span class="badge badge-gold">Real Returns & Inflation</span>
+        <h3><a href={`${basePath}/articles/lifestyle-inflation-the-silent-killer/`}>Lifestyle Inflation: The Structural Flaw in Using Official CPI</a></h3>
+        <p>Dissecting why MoSPI's 45.86% food weighting causes national headline CPI to drastically understate urban household expenditure.</p>
+        <div class="card-meta">11 min read • Verified Oct 2026</div>
+      </div>
+    </div>
+
+    <div class="view-all-row">
+      <a href={`${basePath}/articles/`} class="btn btn-gold">Explore All 15+ Research Papers →</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-container {
+    padding-top: 3.5rem;
+    padding-bottom: 3rem;
+    text-align: center;
+  }
+
+  .hero-badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-title {
+    font-size: 3.25rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .highlight-gold {
+    color: var(--iq-rupee-gold);
+    text-shadow: 0 0 24px var(--iq-rupee-gold-glow);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--iq-text-secondary);
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .stats-bar {
+    margin-bottom: 3.5rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    background-color: var(--iq-surface);
+    border: 1px solid var(--iq-border);
+    border-radius: var(--iq-radius-lg);
+    padding: 1.5rem;
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+
+  .stat-num {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--iq-rupee-gold);
+    font-family: var(--iq-font-mono);
+  }
+
+  .stat-desc {
+    font-size: 0.8rem;
+    color: var(--iq-text-secondary);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--iq-rupee-gold);
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+    margin-top: 0.25rem;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .section-desc {
+    color: var(--iq-text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .calculators-section {
+    margin-bottom: 4rem;
+  }
+
+  .articles-preview-section {
+    margin-bottom: 4rem;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .article-card h3 {
+    margin-top: 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .article-card h3 a {
+    color: var(--iq-text-primary);
+  }
+
+  .article-card h3 a:hover {
+    color: var(--iq-text-link);
+  }
+
+  .article-card p {
+    color: var(--iq-text-secondary);
+    font-size: 0.9rem;
+    flex: 1;
+  }
+
+  .card-meta {
+    font-size: 0.75rem;
+    color: var(--iq-text-muted);
+    border-top: 1px solid var(--iq-border-subtle);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .view-all-row {
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.35rem;
+    }
+    .hero-subtitle {
+      font-size: 1.05rem;
+    }
+  }
+</style>

@@ -1,0 +1,94 @@
+/**
+ * InvestiQ India - Universal Design Tokens
+ * Premium, high-contrast, accessible financial typography and palette.
+ * Inspired by sovereign institutional research terminals.
+ */
+:root {
+  /* Brand Core */
+  --iq-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --iq-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Color Palette - Light Mode */
+  --iq-bg: #0d1117;
+  --iq-bg-canvas: #090d13;
+  --iq-surface: #161b22;
+  --iq-surface-raised: #21262d;
+  --iq-surface-overlay: #30363d;
+  --iq-border: #30363d;
+  --iq-border-subtle: #21262d;
+
+  /* Typography Colors */
+  --iq-text-primary: #f0f6fc;
+  --iq-text-secondary: #8b949e;
+  --iq-text-muted: #6e7681;
+  --iq-text-link: #58a6ff;
+  --iq-text-link-hover: #79c0ff;
+
+  /* Quantitative & Status Colors */
+  --iq-rupee-gold: #e3b341;
+  --iq-rupee-gold-glow: rgba(227, 179, 65, 0.15);
+  --iq-accent: #2f81f7;
+  --iq-accent-glow: rgba(47, 129, 247, 0.2);
+  --iq-success: #3fb950;
+  --iq-success-bg: rgba(63, 185, 80, 0.1);
+  --iq-warning: #d29922;
+  --iq-warning-bg: rgba(210, 153, 34, 0.12);
+  --iq-danger: #f85149;
+  --iq-danger-bg: rgba(248, 81, 73, 0.12);
+  --iq-purple: #bc8cff;
+
+  /* Spacing */
+  --iq-space-xs: 0.25rem;
+  --iq-space-sm: 0.5rem;
+  --iq-space-md: 1rem;
+  --iq-space-lg: 1.5rem;
+  --iq-space-xl: 2rem;
+  --iq-space-2xl: 3rem;
+  --iq-space-3xl: 4.5rem;
+
+  /* Radii */
+  --iq-radius-sm: 4px;
+  --iq-radius-md: 8px;
+  --iq-radius-lg: 12px;
+  --iq-radius-full: 9999px;
+
+  /* Shadows */
+  --iq-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --iq-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --iq-shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
+
+  /* Transitions */
+  --iq-transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme='light'] {
+  --iq-bg: #f6f8fa;
+  --iq-bg-canvas: #ffffff;
+  --iq-surface: #ffffff;
+  --iq-surface-raised: #f3f4f6;
+  --iq-surface-overlay: #e5e7eb;
+  --iq-border: #d0d7de;
+  --iq-border-subtle: #eaeef2;
+
+  --iq-text-primary: #1f2328;
+  --iq-text-secondary: #57606a;
+  --iq-text-muted: #8c959f;
+  --iq-text-link: #0969da;
+  --iq-text-link-hover: #0550ae;
+
+  --iq-rupee-gold: #9a6700;
+  --iq-rupee-gold-glow: rgba(154, 103, 0, 0.1);
+  --iq-accent: #0969da;
+  --iq-accent-glow: rgba(9, 105, 218, 0.1);
+  --iq-success: #1a7f37;
+  --iq-success-bg: rgba(26, 127, 55, 0.08);
+  --iq-warning: #9a6700;
+  --iq-warning-bg: rgba(154, 103, 0, 0.08);
+  --iq-danger: #cf222e;
+  --iq-danger-bg: rgba(207, 34, 46, 0.08);
+  --iq-purple: #8250df;
+
+  --iq-shadow-sm: 0 1px 3px rgba(31, 35, 40, 0.12);
+  --iq-shadow-md: 0 4px 12px rgba(31, 35, 40, 0.08);
+  --iq-shadow-lg: 0 12px 28px rgba(31, 35, 40, 0.12);
+}

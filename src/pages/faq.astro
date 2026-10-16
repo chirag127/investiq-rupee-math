@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const faqs = [
+  {
+    q: "Why is XIRR considered superior to CAGR for evaluating mutual fund SIPs?",
+    a: "CAGR strictly assumes a single lump-sum deployment at the starting date and a single redemption at the terminal date. In an SIP, you deploy capital across dozens of different calendar dates at varying NAVs. XIRR applies discounted cash flow mathematics (via Newton-Raphson iteration) to calculate the exact annualized internal rate of return, taking into account the time-weighted duration each individual rupee had to compound."
+  },
+  {
+    q: "Why does the Fisher Equation formula differ from the standard shortcut (Nominal - Inflation)?",
+    a: "The standard rule-of-thumb r_real ≈ r_nominal - inflation ignores the cross-product term (r_real * inflation). Inflation diminishes the purchasing power of not just your initial capital, but also the profits generated during the investment period. The exact identity is (1 + r_real) = (1 + r_nominal) / (1 + inflation). In high-inflation or high-growth environments like India, the simple shortcut overstates real returns by 30 to 75 basis points every year."
+  },
+  {
+    q: "What changes did the Finance (No. 2) Act, 2024 introduce to capital gains tax rates?",
+    a: "Effective July 23, 2024, the Indian Parliament enacted major capital gains revisions: 1) Long-Term Capital Gains (LTCG) on listed equities and equity mutual funds increased from 10% to 12.5%, with the annual exemption limit raised from ₹1,00,000 to ₹1,25,000. 2) Short-Term Capital Gains (STCG) on equity under Section 111A increased from 15% to 20%. 3) Debt mutual funds acquired on or after April 1, 2023 remain taxed at marginal income slab rates under Section 50AA."
+  },
+  {
+    q: "Why is the US 4% Rule potentially unsafe for Indian retirees?",
+    a: "The 4% Rule from the Trinity Study was based on historical US capital market conditions where inflation averaged ~3% and debt offered positive real yields. In India, long-term CPI inflation hovers around 6% (with urban health and lifestyle inflation at 8%–11%), and post-tax debt returns are frequently negative in real terms. Quantitative simulations indicate that an initial Safe Withdrawal Rate (SWR) of 2.75% to 3.25% is required for a 35+ year retirement in India."
+  },
+  {
+    q: "Does InvestiQ RupeeMath collect, store, or transmit my portfolio data?",
+    a: "No. Absolutely zero data leaves your web browser. All calculation algorithms execute entirely client-side using JavaScript. We have no analytics trackers, no telemetry scripts, no third-party advertisements, and no tracking cookies. You can inspect our open-source codebase on GitHub or verify our privacy scanner report."
+  }
+];
+---
+
+<BaseLayout 
+  title="Frequently Asked Questions (FAQ)"
+  description="Common questions on compounding physics, Indian capital gains taxation, XIRR calculations, and quantitative methodology."
+>
+  <div class="container container-narrow page-content">
+    <div class="badge-row">
+      <span class="badge badge-gold">FAQ</span>
+      <span class="badge badge-blue">Regulatory & Math Insights</span>
+    </div>
+    <h1>Frequently Asked Questions</h1>
+    <p class="intro-p">
+      Detailed answers to common questions regarding quantitative finance metrics, Indian tax statutes, and calculator operation.
+    </p>
+
+    <div class="faq-list">
+      {faqs.map(item => (
+        <div class="faq-item card">
+          <h3>{item.q}</h3>
+          <p>{item.a}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .intro-p {
+    font-size: 1.15rem;
+    color: var(--iq-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .faq-item h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    color: var(--iq-text-primary);
+    font-size: 1.15rem;
+  }
+  .faq-item p {
+    margin: 0;
+    color: var(--iq-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+</style>

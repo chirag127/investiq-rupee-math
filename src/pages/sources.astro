@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const sources = [
+  {
+    authority: "Reserve Bank of India (RBI)",
+    title: "Monetary Policy Framework Agreement & CPI Target Band (4% +/- 2%)",
+    url: "https://www.rbi.org.in/",
+    verified: "2026-10-15",
+    description: "Official monetary policy framework governing central bank repo rates, inflation expectations, and quarterly commercial bank deposit interest conventions."
+  },
+  {
+    authority: "Ministry of Statistics and Programme Implementation (MoSPI)",
+    title: "Consumer Price Index (Base 2012=100) Group Weights & Monthly Releases",
+    url: "https://www.mospi.gov.in/",
+    verified: "2026-10-15",
+    description: "Statistical weighting schedules for Rural, Urban, and Combined national CPI, establishing the 45.86% Food & Beverages weighting."
+  },
+  {
+    authority: "Income Tax Department / Ministry of Law and Justice",
+    title: "The Finance (No. 2) Act, 2024 (Act No. 15 of 2024)",
+    url: "https://incometaxindia.gov.in/",
+    verified: "2026-10-15",
+    description: "Legislative amendments enacting 12.5% LTCG under Section 112A, 20% STCG under Section 111A, and ₹1.25 Lakh annual exemption thresholds."
+  },
+  {
+    authority: "Securities and Exchange Board of India (SEBI)",
+    title: "SEBI Master Circular for Mutual Funds: Scheme Performance Advertising",
+    url: "https://www.sebi.gov.in/",
+    verified: "2026-10-15",
+    description: "Mandatory regulatory guidelines prescribing CAGR for lump-sum performance and XIRR for Systematic Investment Plans."
+  },
+  {
+    authority: "Association of Mutual Funds in India (AMFI)",
+    title: "Indian Mutual Fund Industry SIP Contribution Trends & Folio Data",
+    url: "https://www.amfiindia.com/",
+    verified: "2026-10-15",
+    description: "Industry aggregate statistics on SIP accounts, average ticket size, and holding duration analysis."
+  },
+  {
+    authority: "Pension Fund Regulatory and Development Authority (PFRDA)",
+    title: "National Pension System (NPS) Guidelines on Decumulation and Annuities",
+    url: "https://www.pfrda.org.in/",
+    verified: "2026-10-15",
+    description: "Regulatory parameters for systematic lump-sum withdrawals, annuity securitization, and retirement solvency in India."
+  }
+];
+---
+
+<BaseLayout 
+  title="Primary Regulatory & Statistical Sources"
+  description="Official Indian statutory gazettes, RBI circulars, SEBI regulations, and MoSPI datasets underpinning all calculations and articles on InvestiQ RupeeMath."
+>
+  <div class="container container-narrow page-content">
+    <div class="badge-row">
+      <span class="badge badge-gold">Bibliography</span>
+      <span class="badge badge-blue">Official Indian Sources</span>
+    </div>
+    <h1>Official Sources & Regulatory References</h1>
+    <p class="intro-p">
+      InvestiQ RupeeMath relies exclusively on verified, primary institutional documentation. We do not base financial formulas or tax rates on hearsay, forum commentary, or secondary press reports.
+    </p>
+
+    <div class="sources-table-wrapper table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Authority / Issuer</th>
+            <th>Document / Publication</th>
+            <th>Verified Date</th>
+            <th>Canonical Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sources.map(src => (
+            <tr>
+              <td><strong>{src.authority}</strong></td>
+              <td>
+                <div style="font-weight: 600; margin-bottom: 0.25rem;">{src.title}</div>
+                <div style="font-size: 0.8rem; color: var(--iq-text-secondary);">{src.description}</div>
+              </td>
+              <td>{src.verified}</td>
+              <td>
+                <a href={src.url} target="_blank" rel="noopener noreferrer" class="btn btn-sm">Verify ↗</a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warning">
+      <h5>Statutory Audit Commitment</h5>
+      <p>
+        If any legislative amendment, CBDT circular, or SEBI regulation alters the tax brackets, exemptions, or reporting formulas cited on this site, our team updates the underlying mathematics and increments the verification timestamp within 72 hours of official gazette notification.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .intro-p {
+    font-size: 1.15rem;
+    color: var(--iq-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .btn-sm {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+  }
+</style>

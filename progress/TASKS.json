@@ -1,0 +1,54 @@
+{
+  "project": "investiq-rupee-math",
+  "lastUpdated": "2026-10-17T03:16:00Z",
+  "tasks": [
+    {
+      "id": "TASK-01",
+      "name": "Verify Git and GitHub Credentials",
+      "status": "COMPLETED",
+      "notes": "Verified remote origin https://github.com/chirag127/investiq-rupee-math.git and gh auth chirag127"
+    },
+    {
+      "id": "TASK-02",
+      "name": "Scaffold Astro v5 TypeScript Application",
+      "status": "PENDING",
+      "notes": "Install astro, typescript, vitest, pagefind"
+    },
+    {
+      "id": "TASK-03",
+      "name": "Implement Finance Math Core & Unit Tests",
+      "status": "PENDING",
+      "notes": "Build src/lib/finance-math.ts and test cases in tests/finance-math.test.ts"
+    },
+    {
+      "id": "TASK-04",
+      "name": "Implement Interactive Client-Side Calculators",
+      "status": "PENDING",
+      "notes": "Real Post-Tax Return Solver, XIRR Engine, Rule of 72/114/144 Visualizer"
+    },
+    {
+      "id": "TASK-05",
+      "name": "Draft 15+ Detailed Researched Articles with Indian Citations",
+      "status": "PENDING",
+      "notes": "Full markdown content collection with frontmatter schema, source links, RBI/SEBI/CBDT facts"
+    },
+    {
+      "id": "TASK-06",
+      "name": "Create Site Support Pages & Design Tokens",
+      "status": "PENDING",
+      "notes": "Glossary, FAQs, Sources, Methodology, Privacy, Disclaimer, Corrections, 404"
+    },
+    {
+      "id": "TASK-07",
+      "name": "Privacy Scanner & Security Audit",
+      "status": "PENDING",
+      "notes": "scripts/privacy-scanner.js for 0 telemetry/0 cookie assurance"
+    },
+    {
+      "id": "TASK-08",
+      "name": "Build, Test, and Deploy to GitHub Actions",
+      "status": "PENDING",
+      "notes": "Test static build, subpath asset URLs, deploy workflow"
+    }
+  ]
+}

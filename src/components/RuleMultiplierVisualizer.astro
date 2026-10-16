@@ -1,0 +1,348 @@
+---
+// Rule of 72 / 114 / 144 Visualizer Interactive Component
+---
+
+<div class="calculator-card" id="rule-multiplier-visualizer">
+  <div class="calc-header">
+    <div class="badge-row">
+      <span class="badge badge-gold">Compounding Physics</span>
+      <span class="badge badge-purple">Logarithmic Precision</span>
+    </div>
+    <h3>Rule of 72, 114 & 144 Visualizer</h3>
+    <p class="calc-subtitle">
+      Inspect exponential asset acceleration curves: Doubling (72), Tripling (114), and Quadrupling (144) horizons vs exact logarithmic calculation ln(M) / ln(1+r).
+    </p>
+  </div>
+
+  <div class="calc-grid">
+    <div class="form-group">
+      <label for="compounding-rate-slider" class="form-label">
+        Annual Compound Rate: <span id="rate-display-val" style="color: var(--iq-rupee-gold); font-weight: 700;">12.0%</span>
+      </label>
+      <input
+        type="range"
+        id="compounding-rate-slider"
+        class="form-range"
+        min="1"
+        max="30"
+        step="0.5"
+        value="12.0"
+      />
+      <div class="range-labels">
+        <span>1% (Debt/Liquid)</span>
+        <span>7% (FD/EPF)</span>
+        <span>12% (Nifty Index)</span>
+        <span>20% (High Growth)</span>
+        <span>30%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-panel">
+    <div class="comparison-cards">
+      <div class="metric-card">
+        <div class="card-badge">2X Principal</div>
+        <h4>Doubling Horizon</h4>
+        <div class="time-stat">
+          <span class="main-time" id="exact-doubling-time">6.1 yrs</span>
+          <span class="sub-label">Exact: <span id="exact-doubling-raw">6.12</span> yrs</span>
+        </div>
+        <div class="rule-comparison">
+          <span>Rule of 72: <strong id="rule-72-val">6.0</strong> yrs</span>
+          <span class="discrepancy" id="rule-72-diff">-0.12 yrs error</span>
+        </div>
+        <p class="card-note">Initial ₹10 Lakhs becomes ₹20 Lakhs</p>
+      </div>
+
+      <div class="metric-card">
+        <div class="card-badge badge-tripling">3X Principal</div>
+        <h4>Tripling Horizon</h4>
+        <div class="time-stat">
+          <span class="main-time" id="exact-tripling-time">9.7 yrs</span>
+          <span class="sub-label">Exact: <span id="exact-tripling-raw">9.69</span> yrs</span>
+        </div>
+        <div class="rule-comparison">
+          <span>Rule of 114: <strong id="rule-114-val">9.5</strong> yrs</span>
+          <span class="discrepancy" id="rule-114-diff">-0.19 yrs error</span>
+        </div>
+        <p class="card-note">Initial ₹10 Lakhs becomes ₹30 Lakhs</p>
+      </div>
+
+      <div class="metric-card">
+        <div class="card-badge badge-quadrupling">4X Principal</div>
+        <h4>Quadrupling Horizon</h4>
+        <div class="time-stat">
+          <span class="main-time" id="exact-quad-time">12.2 yrs</span>
+          <span class="sub-label">Exact: <span id="exact-quad-raw">12.23</span> yrs</span>
+        </div>
+        <div class="rule-comparison">
+          <span>Rule of 144: <strong id="rule-144-val">12.0</strong> yrs</span>
+          <span class="discrepancy" id="rule-144-diff">-0.23 yrs error</span>
+        </div>
+        <p class="card-note">Initial ₹10 Lakhs becomes ₹40 Lakhs</p>
+      </div>
+
+      <div class="metric-card metric-inflation">
+        <div class="card-badge badge-halving">0.5X Purchasing Power</div>
+        <h4>Inflation Halving</h4>
+        <div class="time-stat">
+          <span class="main-time" id="exact-halving-time">11.9 yrs</span>
+          <span class="sub-label">At current % rate</span>
+        </div>
+        <div class="rule-comparison">
+          <span>Rule of 70: <strong id="rule-70-val">11.7</strong> yrs</span>
+        </div>
+        <p class="card-note">₹10 Lakhs buying power degrades to ₹5 Lakhs</p>
+      </div>
+    </div>
+
+    <!-- Comparative Table -->
+    <div class="table-wrapper">
+      <table class="benchmark-table">
+        <thead>
+          <tr>
+            <th>Rate (% p.a.)</th>
+            <th>Doubling (Exact)</th>
+            <th>Rule of 72</th>
+            <th>Tripling (Exact)</th>
+            <th>Rule of 114</th>
+            <th>Quadrupling (Exact)</th>
+            <th>Rule of 144</th>
+          </tr>
+        </thead>
+        <tbody id="benchmark-tbody">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-warning">
+      <h5>Why Rule of 72 Works & Where It Fails</h5>
+      <p>
+        The natural logarithm of 2 is approximately <code>0.693147</code>. Thus, continuous compounding doubles in <code>69.3 / r</code>. For discrete annual compounding between 6% and 10%, 72 is more divisible (by 2, 3, 4, 6, 8, 9, 12) and compensates for discrete compounding drag. At extreme rates above 20% or below 4%, the rule's error expands significantly.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    const slider = document.getElementById('compounding-rate-slider');
+    const rateDisplay = document.getElementById('rate-display-val');
+
+    if (!slider || !rateDisplay) return;
+
+    function update() {
+      const rate = parseFloat(slider.value);
+      rateDisplay.textContent = rate.toFixed(1) + '%';
+
+      const r = rate / 100;
+
+      // Exact times
+      const exact2 = Math.log(2) / Math.log(1 + r);
+      const exact3 = Math.log(3) / Math.log(1 + r);
+      const exact4 = Math.log(4) / Math.log(1 + r);
+      const exactHalf = Math.log(2) / Math.log(1 + r); // Halving period under r inflation
+
+      // Rule times
+      const r72 = 72 / rate;
+      const r114 = 114 / rate;
+      const r144 = 144 / rate;
+      const r70 = 70 / rate;
+
+      // Update DOM
+      document.getElementById('exact-doubling-time').textContent = exact2.toFixed(1) + ' yrs';
+      document.getElementById('exact-doubling-raw').textContent = exact2.toFixed(2);
+      document.getElementById('rule-72-val').textContent = r72.toFixed(1);
+      document.getElementById('rule-72-diff').textContent = (r72 - exact2 >= 0 ? '+' : '') + (r72 - exact2).toFixed(2) + ' yrs error';
+
+      document.getElementById('exact-tripling-time').textContent = exact3.toFixed(1) + ' yrs';
+      document.getElementById('exact-tripling-raw').textContent = exact3.toFixed(2);
+      document.getElementById('rule-114-val').textContent = r114.toFixed(1);
+      document.getElementById('rule-114-diff').textContent = (r114 - exact3 >= 0 ? '+' : '') + (r114 - exact3).toFixed(2) + ' yrs error';
+
+      document.getElementById('exact-quad-time').textContent = exact4.toFixed(1) + ' yrs';
+      document.getElementById('exact-quad-raw').textContent = exact4.toFixed(2);
+      document.getElementById('rule-144-val').textContent = r144.toFixed(1);
+      document.getElementById('rule-144-diff').textContent = (r144 - exact4 >= 0 ? '+' : '') + (r144 - exact4).toFixed(2) + ' yrs error';
+
+      document.getElementById('exact-halving-time').textContent = exactHalf.toFixed(1) + ' yrs';
+      document.getElementById('rule-70-val').textContent = r70.toFixed(1);
+    }
+
+    function renderBenchmarkTable() {
+      const tbody = document.getElementById('benchmark-tbody');
+      if (!tbody) return;
+      const sampleRates = [4, 6, 8, 10, 12, 14, 16, 20];
+
+      tbody.innerHTML = '';
+      sampleRates.forEach(rate => {
+        const r = rate / 100;
+        const e2 = Math.log(2) / Math.log(1 + r);
+        const r72 = 72 / rate;
+        const e3 = Math.log(3) / Math.log(1 + r);
+        const r114 = 114 / rate;
+        const e4 = Math.log(4) / Math.log(1 + r);
+        const r144 = 144 / rate;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${rate}%</strong></td>
+          <td>${e2.toFixed(2)} yrs</td>
+          <td>${r72.toFixed(2)} yrs</td>
+          <td>${e3.toFixed(2)} yrs</td>
+          <td>${r114.toFixed(2)} yrs</td>
+          <td>${e4.toFixed(2)} yrs</td>
+          <td>${r144.toFixed(2)} yrs</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    slider.addEventListener('input', update);
+    update();
+    renderBenchmarkTable();
+  })();
+</script>
+
+<style>
+  .calculator-card {
+    background-color: var(--iq-surface);
+    border: 1px solid var(--iq-border);
+    border-radius: var(--iq-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--iq-shadow-md);
+    margin: 2rem 0;
+  }
+
+  .calc-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .calc-subtitle {
+    color: var(--iq-text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+  }
+
+  .form-range {
+    width: 100%;
+    accent-color: var(--iq-rupee-gold);
+    cursor: pointer;
+    margin: 0.5rem 0;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--iq-text-muted);
+  }
+
+  .comparison-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .metric-card {
+    background-color: var(--iq-surface);
+    border: 1px solid var(--iq-border);
+    border-radius: var(--iq-radius-md);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .metric-inflation {
+    border-color: rgba(248, 81, 73, 0.4);
+    background: linear-gradient(180deg, var(--iq-surface) 0%, rgba(248, 81, 73, 0.05) 100%);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--iq-radius-sm);
+    background-color: var(--iq-rupee-gold-glow);
+    color: var(--iq-rupee-gold);
+    border: 1px solid var(--iq-rupee-gold);
+  }
+
+  .badge-tripling {
+    background-color: var(--iq-accent-glow);
+    color: var(--iq-accent);
+    border-color: var(--iq-accent);
+  }
+
+  .badge-quadrupling {
+    background-color: rgba(188, 140, 255, 0.15);
+    color: var(--iq-purple);
+    border-color: var(--iq-purple);
+  }
+
+  .badge-halving {
+    background-color: var(--iq-danger-bg);
+    color: var(--iq-danger);
+    border-color: var(--iq-danger);
+  }
+
+  .metric-card h4 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+  }
+
+  .time-stat {
+    margin-bottom: 0.75rem;
+  }
+
+  .main-time {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: var(--iq-font-mono);
+    color: var(--iq-text-primary);
+    display: block;
+  }
+
+  .sub-label {
+    font-size: 0.75rem;
+    color: var(--iq-text-muted);
+  }
+
+  .rule-comparison {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--iq-border-subtle);
+    border-bottom: 1px solid var(--iq-border-subtle);
+    margin-bottom: 0.5rem;
+  }
+
+  .discrepancy {
+    color: var(--iq-warning);
+    font-family: var(--iq-font-mono);
+  }
+
+  .card-note {
+    font-size: 0.75rem;
+    color: var(--iq-text-secondary);
+    margin: 0;
+  }
+
+  .benchmark-table {
+    font-size: 0.85rem;
+  }
+</style>

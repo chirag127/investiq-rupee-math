@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<BaseLayout 
+  title="Privacy Architecture & Zero-Tracking Guarantee"
+  description="Exhaustive explanation of InvestiQ RupeeMath's zero-cookie, zero-telemetry, 100% client-side privacy architecture."
+>
+  <div class="container container-narrow page-content">
+    <div class="badge-row">
+      <span class="badge badge-green">Zero Telemetry</span>
+      <span class="badge badge-gold">100% Client-Side</span>
+    </div>
+    <h1>Privacy Architecture & Guarantees</h1>
+    <p class="intro-p">
+      InvestiQ RupeeMath was engineered under a privacy-by-design mandate. We hold that personal financial simulations—involving your personal cash flows, net worth, tax brackets, and retirement timelines—should never leave your private device.
+    </p>
+
+    <div class="card callout-card">
+      <h3>The Core Guarantees</h3>
+      <ul>
+        <li><strong>Zero Data Transmission:</strong> Every financial calculation (XIRR, Fisher real return, Rule of 72) executes entirely inside your browser's JavaScript engine. No inputs or results are ever sent over the network to any server.</li>
+        <li><strong>Zero Third-Party Analytics:</strong> We load no Google Analytics, no Meta Pixels, no Hotjar recordings, no Mixpanel, and no user tracking scripts of any kind.</li>
+        <li><strong>Zero Cookies:</strong> This website sets no HTTP cookies. We do not use cookie banners because we do not set tracking cookies.</li>
+        <li><strong>Local Storage Transparency:</strong> The only browser storage utilized is <code>localStorage.getItem('iq_theme')</code> to remember your dark/light mode preference across page reloads. No financial data is persisted without your explicit local click.</li>
+        <li><strong>Static Search via Pagefind:</strong> Search indexing occurs entirely statically at build time. Search queries are executed locally via WebAssembly/JavaScript without logging your search terms.</li>
+      </ul>
+    </div>
+
+    <h2>Auditing Our Privacy Architecture</h2>
+    <p>
+      You can independently verify our claims:
+    </p>
+    <ol>
+      <li><strong>Open Developer Tools (F12):</strong> Inspect the <em>Network</em> tab while using the XIRR or Real Return calculators. You will observe zero outgoing POST/GET telemetry requests.</li>
+      <li><strong>Inspect Application Storage:</strong> Check <em>Application &gt; Cookies</em>. The cookie list is completely empty.</li>
+      <li><strong>Run the Privacy Scanner:</strong> Our repository includes an automated scanner at <code>scripts/privacy-scanner.js</code> that scans the production build output to enforce zero tracking scripts or external beacons.</li>
+    </ol>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .intro-p {
+    font-size: 1.15rem;
+    color: var(--iq-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .callout-card {
+    margin-bottom: 2rem;
+  }
+  .callout-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--iq-success);
+  }
+  .callout-card ul {
+    margin-bottom: 0;
+  }
+  .callout-card li {
+    margin-bottom: 0.75rem;
+  }
+</style>

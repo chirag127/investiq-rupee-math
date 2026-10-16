@@ -1,0 +1,178 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const articles = await getCollection('articles');
+const sortedArticles = articles.sort((a, b) => 
+  new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime()
+);
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const categories = [
+  'All',
+  'Compounding Physics',
+  'Real Returns & Inflation',
+  'Cash Flow Analytics',
+  'Risk & Drawdowns',
+  'Retirement & Sequence Risk',
+];
+---
+
+<BaseLayout 
+  title="Quantitative Financial Research Library"
+  description="Comprehensive repository of mathematical papers on Indian financial physics, real returns, tax drag, SIP cash flow mechanics, and sequence of returns risk."
+>
+  <div class="container page-header">
+    <div class="badge-row">
+      <span class="badge badge-gold">Research Index</span>
+      <span class="badge badge-blue">{sortedArticles.length} Published Papers</span>
+    </div>
+    <h1>InvestiQ Quantitative Research Library</h1>
+    <p class="page-subtitle">
+      Peer-reviewed mathematical papers, regulatory-aligned tax proofs, and empirical studies calibrated specifically to the Indian macroeconomic landscape.
+    </p>
+  </div>
+
+  <div class="container articles-archive">
+    <div class="articles-list-grid">
+      {sortedArticles.map((article) => (
+        <article class="card article-list-card">
+          <div class="card-top">
+            <span class="badge badge-gold">{article.data.category}</span>
+            <span class="meta-date">Verified: {article.data.lastVerifiedDate}</span>
+          </div>
+
+          <h2>
+            <a href={`${basePath}/articles/${article.slug}/`}>{article.data.title}</a>
+          </h2>
+          <p>{article.data.description}</p>
+
+          <div class="tags-row">
+            {article.data.tags.map(t => (
+              <span class="tag-chip">#{t}</span>
+            ))}
+          </div>
+
+          <div class="card-bottom">
+            <span class="author-label">{article.data.author}</span>
+            <a href={`${basePath}/articles/${article.slug}/`} class="read-more-link">Read Paper →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--iq-border);
+    margin-bottom: 2.5rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .page-subtitle {
+    color: var(--iq-text-secondary);
+    font-size: 1.15rem;
+    max-width: 800px;
+  }
+
+  .articles-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .article-list-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .meta-date {
+    font-size: 0.75rem;
+    color: var(--iq-text-muted);
+  }
+
+  .article-list-card h2 {
+    font-size: 1.25rem;
+    line-height: 1.35;
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
+    border: none;
+    padding: 0;
+  }
+
+  .article-list-card h2 a {
+    color: var(--iq-text-primary);
+  }
+
+  .article-list-card h2 a:hover {
+    color: var(--iq-text-link);
+  }
+
+  .article-list-card p {
+    color: var(--iq-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.75rem 0;
+  }
+
+  .tag-chip {
+    font-size: 0.7rem;
+    color: var(--iq-text-muted);
+    background-color: var(--iq-surface-raised);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--iq-radius-sm);
+  }
+
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--iq-border-subtle);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .author-label {
+    color: var(--iq-text-muted);
+  }
+
+  .read-more-link {
+    color: var(--iq-rupee-gold);
+    font-weight: 600;
+  }
+
+  .read-more-link:hover {
+    text-decoration: underline;
+  }
+</style>

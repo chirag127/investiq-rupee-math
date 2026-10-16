@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<BaseLayout 
+  title="Report an Error & Corrections Policy"
+  description="Transparent procedure for submitting corrections, factual disputes, or mathematical discrepancies to the InvestiQ RupeeMath editorial team."
+>
+  <div class="container container-narrow page-content">
+    <div class="badge-row">
+      <span class="badge badge-gold">Editorial Governance</span>
+      <span class="badge badge-blue">Audit Protocol</span>
+    </div>
+    <h1>Corrections Policy & Error Submissions</h1>
+    <p class="intro-p">
+      InvestiQ RupeeMath is committed to quantitative rigor and statutory precision. If you identify a mathematical error, broken formula, outdated tax threshold, or unverified statistical claim, we encourage you to submit a correction request.
+    </p>
+
+    <h2>How to Submit an Error Report</h2>
+    <p>
+      Because our repository is public and version-controlled, you can submit reports directly through standard open-source channels:
+    </p>
+    <div class="card error-submission-card">
+      <h3>Submission Options</h3>
+      <ol>
+        <li>
+          <strong>GitHub Issues (Preferred):</strong> File a detailed issue on our official GitHub repository specifying the exact URL, the line of text or equation, and your suggested correction accompanied by primary documentation citations (e.g. RBI/SEBI/CBDT notification).
+          <br />
+          <a href="https://github.com/chirag127/investiq-rupee-math/issues" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="margin-top: 0.75rem;">
+            Open GitHub Issue ↗
+          </a>
+        </li>
+        <li>
+          <strong>Pull Requests:</strong> If you are comfortable editing Markdown or TypeScript, submit a Pull Request proposing direct code or content corrections.
+        </li>
+      </ol>
+    </div>
+
+    <h2>Our Review & Correction SLA</h2>
+    <ul>
+      <li><strong>Statutory / Tax Rate Discrepancies:</strong> Reviewed and updated within 24–48 hours of notification.</li>
+      <li><strong>Formula / Calculation Bugs:</strong> Reviewed against automated unit test suites in <code>tests/finance-math.test.ts</code>; corrected code deployed immediately upon validation.</li>
+      <li><strong>Typographical & Editorial Edits:</strong> Integrated into regular bi-weekly deployment cycles.</li>
+    </ul>
+
+    <div class="callout callout-success">
+      <h5>Public Changelog</h5>
+      <p>
+        Every correction is documented in our Git commit history with a clear explanation of what was modified, why, and the date of verification.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-content {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+  }
+  .badge-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .intro-p {
+    font-size: 1.15rem;
+    color: var(--iq-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .error-submission-card {
+    margin: 1.5rem 0;
+  }
+  .error-submission-card h3 {
+    margin-top: 0;
+  }
+  .error-submission-card ol {
+    margin-bottom: 0;
+  }
+  .error-submission-card li {
+    margin-bottom: 1.25rem;
+  }
+</style>
